@@ -1,0 +1,156 @@
+Description: Make AVX symbols to be strictly visible (fix build with gcc8)
+ _mm256_insertf128_si256 and _mm256_castsi128_si256 are undeclared
+ in the scope of source/common/vec/intrinsic.h,
+ which seems to be strictly not permitted by gcc8.
+Author: Daniel Bermond <danielbermond@yahoo.com>
+Origin: upstream, https://github.com/pkuvcl/davs2/commit/00ef2c8
+Bug: https://github.com/pkuvcl/davs2/issues/9
+Last-Update: 2018-12-25
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+--- a/source/common/vec/intrinsic_deblock_avx2.cc
++++ b/source/common/vec/intrinsic_deblock_avx2.cc
+@@ -30,15 +30,14 @@
+  *    For more information, contact us at sswang @ pku.edu.cn.
+  */
+ 
+-#include "../common.h"
+-#include "intrinsic.h"
+-
+ #include <mmintrin.h>
+ #include <emmintrin.h>
+ #include <tmmintrin.h>
+ #include <smmintrin.h>
+ #include <immintrin.h>
+ 
++#include "../common.h"
++#include "intrinsic.h"
+ 
+ #if !HIGH_BIT_DEPTH
+ __m128i c_0_128;
+--- a/source/common/vec/intrinsic_idct_avx2.cc
++++ b/source/common/vec/intrinsic_idct_avx2.cc
+@@ -30,15 +30,15 @@
+  *    For more information, contact us at sswang @ pku.edu.cn.
+  */
+ 
+-#include "../common.h"
+-#include "intrinsic.h"
+-
+ #include <mmintrin.h>
+ #include <emmintrin.h>
+ #include <tmmintrin.h>
+ #include <smmintrin.h>
+ #include <immintrin.h>
+ 
++#include "../common.h"
++#include "intrinsic.h"
++
+ /* disable warnings */
+ #pragma warning(disable:4127)  // warning C4127: 条件表达式是常量
+ 
+--- a/source/common/vec/intrinsic_inter_pred.cc
++++ b/source/common/vec/intrinsic_inter_pred.cc
+@@ -30,15 +30,15 @@
+  *    For more information, contact us at sswang @ pku.edu.cn.
+  */
+ 
+-#include "../common.h"
+-#include "intrinsic.h"
+-
+ #include <mmintrin.h>
+ #include <emmintrin.h>
+ #include <tmmintrin.h>
+ #include <smmintrin.h>
+ #include <immintrin.h>
+ 
++#include "../common.h"
++#include "intrinsic.h"
++
+ #if !HIGH_BIT_DEPTH
+ /* ---------------------------------------------------------------------------
+  */
+--- a/source/common/vec/intrinsic_inter_pred_avx2.cc
++++ b/source/common/vec/intrinsic_inter_pred_avx2.cc
+@@ -30,14 +30,15 @@
+  *    For more information, contact us at sswang @ pku.edu.cn.
+  */
+ 
+-#include "../common.h"
+-#include "intrinsic.h"
+-
+ #include <mmintrin.h>
+ #include <emmintrin.h>
+ #include <tmmintrin.h>
+ #include <smmintrin.h>
+ #include <immintrin.h>
++
++#include "../common.h"
++#include "intrinsic.h"
++
+ #pragma warning(disable:4127)  // warning C4127: 条件表达式是常量
+ 
+ #if !HIGH_BIT_DEPTH
+--- a/source/common/vec/intrinsic_intra-pred_avx2.cc
++++ b/source/common/vec/intrinsic_intra-pred_avx2.cc
+@@ -30,15 +30,15 @@
+  *    For more information, contact us at sswang @ pku.edu.cn.
+  */
+ 
+-#include "../common.h"
+-#include "intrinsic.h"
+-
+ #include <mmintrin.h>
+ #include <emmintrin.h>
+ #include <tmmintrin.h>
+ #include <smmintrin.h>
+ #include <immintrin.h>
+ 
++#include "../common.h"
++#include "intrinsic.h"
++
+ #if !HIGH_BIT_DEPTH
+ 
+ void intra_pred_ver_avx(pel_t *src, pel_t *dst, int i_dst, int dir_mode, int bsx, int bsy)
+--- a/source/common/vec/intrinsic_pixel_avx.cc
++++ b/source/common/vec/intrinsic_pixel_avx.cc
+@@ -30,15 +30,15 @@
+  *    For more information, contact us at sswang @ pku.edu.cn.
+  */
+ 
+-#include "../common.h"
+-#include "intrinsic.h"
+-
+ #include <mmintrin.h>
+ #include <emmintrin.h>
+ #include <tmmintrin.h>
+ #include <smmintrin.h>
+ #include <immintrin.h>
+ 
++#include "../common.h"
++#include "intrinsic.h"
++
+ /* ---------------------------------------------------------------------------
+  */
+ void *davs2_memzero_aligned_c_avx(void *dst, size_t n)
+--- a/source/common/vec/intrinsic_sao_avx2.cc
++++ b/source/common/vec/intrinsic_sao_avx2.cc
+@@ -30,15 +30,15 @@
+  *    For more information, contact us at sswang @ pku.edu.cn.
+  */
+ 
+-#include "../common.h"
+-#include "intrinsic.h"
+-
+ #include <mmintrin.h>
+ #include <emmintrin.h>
+ #include <tmmintrin.h>
+ #include <smmintrin.h>
+ #include <immintrin.h>
+ 
++#include "../common.h"
++#include "intrinsic.h"
++
+ #if !HIGH_BIT_DEPTH
+ #ifdef _MSC_VER
+ #pragma warning(disable:4244)  // TODO: 修正编译warning

@@ -1,0 +1,70 @@
+Source: davs2
+Section: video
+Priority: optional
+Maintainer: Deepin Developer <deepin-dev@deepin.org>
+Uploaders: Deepin Packages Builder <packages@deepin.org>
+Build-Depends:
+ debhelper,
+ pkg-kde-tools,
+ nasm,
+ help2man,
+Standards-Version: 4.2.1
+Homepage: https://github.com/pkuvcl/davs2
+
+Package: davs2
+Architecture: any
+Depends:
+ libdavs2-16 (= ${binary:Version}),
+ ${shlibs:Depends},
+ ${misc:Depends},
+Description: AVS2 (IEEE 1857.4) decoder - command-line tool
+ davs2 is an decoder for the AVS2-P2/IEEE1857.4 video codec.
+ .
+ Audio Video Coding Standard (AVS) is a standard
+ for compression digital audio and digital,
+ developed and widely used in China.
+ the second generation AVS standard (AVS2)
+ primarily targets Ultra HD (High Definition) video,
+ with features comparable to MPEG H.265 (HEVC) and VC9.
+ .
+ This package provides the command-line tool davs2.
+
+Package: libdavs2-16
+Architecture: any
+Section: libs
+Multi-Arch: same
+Depends:
+ ${misc:Depends},
+ ${shlibs:Depends},
+Pre-Depends:
+ ${misc:Pre-Depends},
+Description: AVS2 (IEEE 1857.4) decoder - runtime library
+ davs2 is an decoder for the AVS2-P2/IEEE1857.4 video codec.
+ .
+ Audio Video Coding Standard (AVS) is a standard
+ for compression digital audio and digital,
+ developed and widely used in China.
+ the second generation AVS standard (AVS2)
+ primarily targets Ultra HD (High Definition) video,
+ with features comparable to MPEG H.265 (HEVC) and VC9.
+ .
+ This package provides libdavs2 runtime library.
+
+Package: libdavs2-dev
+Architecture: any
+Section: libdevel
+Multi-Arch: same
+Depends:
+ libdavs2-16 (= ${binary:Version}),
+ ${misc:Depends},
+Description: AVS2 (IEEE 1857.4) decoder - runtime library
+ davs2 is an decoder for the AVS2-P2/IEEE1857.4 video codec.
+ .
+ Audio Video Coding Standard (AVS) is a standard
+ for compression digital audio and digital,
+ developed and widely used in China.
+ the second generation AVS standard (AVS2)
+ primarily targets Ultra HD (High Definition) video,
+ with features comparable to MPEG H.265 (HEVC) and VC9.
+ .
+ This package provides libdavs2 development headers.

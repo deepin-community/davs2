@@ -1,0 +1,27 @@
+Description: Allow preseeding build revision from environment variable
+ Build revision is resolved from git metadata,
+ but compilation may happen disconnected from git
+ or from a different git than upstream.
+ .
+ This patch allows setting VER_SHA from environment variables
+ and if VER_SHA is different from "not-in-git-tree
+ then no probing for git metadata is attempted.
+Author: Jonas Smedegaard <dr@jones.dk>
+Last-Update: 2018-12-23
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+--- a/version.sh
++++ b/version.sh
+@@ -11,10 +11,10 @@
+ # setting API version
+ api=`grep '#define DAVS2_BUILD' < ./source/davs2.h | sed 's/^.* \([1-9][0-9]*\).*$/\1/'`
+ VER_R=0
+-VER_SHA='not-in-git-tree'
++VER_SHA=${VER_SHA:-not-in-git-tree}
+ 
+ # get version of remote origin/master and local HEAD
+-if [ -d .git ] && command -v git >/dev/null 2>&1 ; then
++if [ "not-in-git-tree" != "$VER_SHA" ] && [ -d .git ] && command -v git >/dev/null 2>&1 ; then
+     VER_R=`git rev-list --count origin/master`
+     VER_SHA=`git rev-parse HEAD | cut -c -16`
+ fi

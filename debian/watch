@@ -1,0 +1,5 @@
+# run "uscan --report" to check or "gbp import-orig --uscan" to update
+version=4
+opts="filenamemangle=s%(?:.*?)?(@ANY_VERSION@@ARCHIVE_EXT@)%@PACKAGE@-$1%" \
+ https://github.com/pkuvcl/davs2/tags \
+ .*/@ANY_VERSION@@ARCHIVE_EXT@

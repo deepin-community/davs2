@@ -1,0 +1,38 @@
+Description: Fix write one more line in intra_pred_ver_sse128().
+Author: luofl <falei.luo@gmail.com>
+Origin: upstream, https://github.com/pkuvcl/davs2/commit/a649cb2
+Last-Update: 2018-12-25
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+--- a/source/common/vec/intrinsic_intra-pred.cc
++++ b/source/common/vec/intrinsic_intra-pred.cc
+@@ -77,7 +77,7 @@
+             }
+             break;
+         case 8:
+-            for (y = 0; y < bsy; y++) {
++            for (y = 0; y < bsy; y += 2) {
+                 CP64(dst, rpSrc);
+                 CP64(dst + i_dst, rpSrc);
+                 dst += i_dst << 1;
+--- a/source/common/vec/intrinsic_intra-pred_avx2.cc
++++ b/source/common/vec/intrinsic_intra-pred_avx2.cc
+@@ -77,17 +77,7 @@
+                 _mm_maskmoveu_si128(S1, mask, (char *)&dst[j]);
+                 dst += i_dst;
+             }
+-        }
+-        /*{//4/8
+-        for (i = 0; i < bsy; i++) {
+-        for (j = 0; j < bsx; j += 4) {
+-        S1 = _mm_loadu_si128((const __m128i*)(rsrc + j));
+-        _mm_storeu_si128((__m128i*)(dst + j), S1);
+-        }
+-        dst += i_dst;
+-        }
+-        }*/
+-        else {
++        }  else {
+             for (i = 0; i < bsy; i++) {//16
+                 S1 = _mm_loadu_si128((const __m128i*)rsrc);
+                 _mm_storeu_si128((__m128i*)dst, S1);

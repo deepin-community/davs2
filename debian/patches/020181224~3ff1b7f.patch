@@ -1,0 +1,18 @@
+Description: Fix avoid duplicate content when passing parameter -h or --help
+Author: luofl <falei.luo@gmail.com>
+Origin: upstream, https://github.com/pkuvcl/davs2/commit/3ff1b7f
+Bug: https://github.com/pkuvcl/davs2/issues/11
+Last-Update: 2018-12-25
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+--- a/source/test/parse_args.h
++++ b/source/test/parse_args.h
+@@ -151,7 +151,7 @@
+         case 'h':   /* fall-through is intentional */
+         case '?':
+             display_usage();
+-            break;
++            return -1;
+         case 0:     /* long option without a short arg */
+             break;
+         default:

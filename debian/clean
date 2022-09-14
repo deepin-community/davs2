@@ -1,0 +1,2 @@
+build/linux/common/vec/*.o
+source/version.h

@@ -1,0 +1,33 @@
+Description: Fix architecture optimizations
+ Avoid Altivec on powerpc, and avoid sse2 on ia32.
+Author: Jonas Smedegaard <dr@jones.dk>
+Last-Update: 2018-12-25
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+--- a/build/linux/configure
++++ b/build/linux/configure
+@@ -664,7 +664,7 @@
+                 CFLAGS="$CFLAGS -march=i686"
+             fi
+             if [[ "$asm" == auto && "$CFLAGS" != *-mfpmath* ]]; then
+-                CFLAGS="$CFLAGS -mfpmath=sse -msse -msse2"
++                CFLAGS="$CFLAGS -mfpmath=sse -msse"
+             fi
+             CFLAGS="-m32 $CFLAGS"
+             LDFLAGS="-m32 $LDFLAGS"
+@@ -712,15 +712,8 @@
+     powerpc*)
+         ARCH="PPC"
+         if [ $asm = auto ] ; then
+-            define HAVE_ALTIVEC
+             AS="${AS-${CC}}"
+             AS_EXT=".c"
+-            if [ $SYS = MACOSX ] ; then
+-                CFLAGS="$CFLAGS -faltivec -fastf -mcpu=G4"
+-            else
+-                CFLAGS="$CFLAGS -maltivec -mabi=altivec"
+-                define HAVE_ALTIVEC_H
+-            fi
+             if [ "$vsx" != "no" ] ; then
+                 vsx="no"
+                 if cc_check "" "-mvsx" ; then

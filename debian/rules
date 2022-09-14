@@ -1,0 +1,51 @@
+#!/usr/bin/make -f
+
+include /usr/share/dpkg/architecture.mk
+include /usr/share/dpkg/pkg-info.mk
+
+OPTS = --enable-shared --enable-pic
+
+# avoid SSE2/Altivec on 32bit hosts where not generally supported
+ifneq (,$(filter 64,$(DEB_HOST_ARCH_BITS)))
+OPTS += --disable-asm
+endif
+
+manpage = debian/davs2.1
+executable = debian/tmp/usr/bin/davs2
+
+%:
+	dh $@ --sourcedirectory=build/linux --with pkgkde_symbolshelper --parallel
+
+override_dh_auto_configure:
+	VER_SHA="$(DEB_DISTRIBUTION)" dh_auto_configure -- $(OPTS)
+
+# generate manpage based on --help option of script itself
+override_dh_auto_install:
+	dh_auto_install
+	help2man \
+		--name="AVS2 (IEEE 1857.4) decoder" \
+		--no-info \
+		--help-option=foobar \
+		--no-discard-stderr \
+		--version-string=$(DEB_VERSION_UPSTREAM) \
+		--output=$(manpage) \
+		$(executable) \
+		|| { $(executable) --help; false; }
+	perl -i -0 -p \
+		-e 's/davs2\K\.exe//g;' \
+		-e 's/^\.SH DESCRIPTION\n.*davs2 foobar\n\.PP\ndavs2 \S+\n//m;' \
+		-e 's/ \\fB(\\-\\-(?:in|out)put)\\fR/ $$1/g;' \
+		-e 's/^\.IP\nusage: +davs2 +(.+)/.SH SYNOPSIS\n.B davs2\n$$1\n.SH OPTIONS/mg;' \
+		-e 's/^(\\fB\\-\\-\w\S+ \S+ \\fB\\-\w\S+(?: [a-zA-Z]\S*)?)\s+/.TP\n$$1\n/mg;' \
+		-e 's/^.PP\n\\fB\\-.*//ms;' \
+		-e 's/=(recfile|threads)/=\\fI$$1\\fR/g;' \
+		-e 's/ (avsfile)/=\\fI$$1\\fR/g;' \
+		$(manpage)
+
+override_dh_clean:
+	dh_clean
+	rm -f $(manpage)
+
+# avoid triggering configure during cleanup
+override_dh_auto_clean:
+	[ ! -f build/linux/config.mak ] || dh_auto_clean
