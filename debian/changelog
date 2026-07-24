@@ -1,3 +1,9 @@
+davs2 (1.7.1-1+dde1) stable; urgency=medium
+
+  * Make davs2 reproducible.
+
+ -- Tianyu Chen <sweetyfish@deepin.org>  Fri, 24 Jul 2026 11:13:08 +0800
+
 davs2 (1.7.1-1+dde) stable; urgency=medium
 
   * ['Rebuild  against by  current gcc 11.2']
