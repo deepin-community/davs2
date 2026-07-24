@@ -1,0 +1,21 @@
+From: Tianyu Chen <sweetyfish@deepin.org>
+Date: Thu, 23 Jul 2026 18:16:32 +0800
+Subject: reproducibility
+
+---
+ version.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/version.sh b/version.sh
+index bf74db8..a619866 100755
+--- a/version.sh
++++ b/version.sh
+@@ -24,7 +24,7 @@ VER_MAJOR=`echo $(($api / 10))`
+ VER_MINOR=`echo $(($api % 10))`
+ 
+ # date and time information
+-BUILD_TIME=`date "+%Y-%m-%d %H:%M:%S"`
++BUILD_TIME=`date "+%Y-%m-%d %H:%M:%S" -d @$SOURCE_DATE_EPOCH`
+ 
+ # generate the file version.h
+ echo "// ==========================================================================="  > version.h
