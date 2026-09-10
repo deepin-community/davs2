@@ -1,3 +1,9 @@
+davs2 (1.7.1-1+dde2) unstable; urgency=medium
+
+  * Rebuild with LTO enabled (dpkg vendor feature optimize/lto).
+
+ -- tunaichao <tunaichao@uniontech.com>  Thu, 10 Sep 2026 16:47:23 +0800
+
 davs2 (1.7.1-1+dde1) stable; urgency=medium
 
   * Make davs2 reproducible.
